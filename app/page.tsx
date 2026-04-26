@@ -988,11 +988,11 @@ export default function Home() {
             }}
           >
             {[
-              "/ban1.PNG",
-              "/ban2.jpg",
-              "/ban3.jpg",
-              "/ban4.jpg",
-              "/ban5.png",
+              "/banner1.PNG",
+              "/banner2.jpg",
+              "/banner3.jpg",
+              "/banner4.jpg",
+              "/banner5.png",
             ].map((banner, i) => (
               <div
                 key={i}
@@ -1042,11 +1042,11 @@ export default function Home() {
             style={{ pointerEvents: "none" }}
           >
             {[
-              "/ban1.jpg",
-              "/ban2.jpeg",
-              "/ban3.jpeg",
-              "/ban4.jpeg",
-              "/ban5.jpeg",
+              "/banner1.PNG",
+              "/banner2.jpg",
+              "/banner3.jpg",
+              "/banner4.jpg",
+              "/banner5.png",
             ].map((banner, i) => (
               <div
                 key={`clone-${i}`}
