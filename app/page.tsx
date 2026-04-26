@@ -197,6 +197,7 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [isJewelleryOpen, setIsJewelleryOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [addedIds, setAddedIds] = useState<Set<number>>(new Set());
@@ -1305,11 +1306,26 @@ export default function Home() {
                     href: "/shop?category=Jewellery",
                     icon: "ring",
                     submenu: [
-                      { label: "Pendant", href: "/shop?category=Jewellery&sub=Pendant" },
-                      { label: "Earring", href: "/shop?category=Jewellery&sub=Earring" },
-                      { label: "Ring", href: "/shop?category=Jewellery&sub=Ring" },
-                      { label: "Bracelet", href: "/shop?category=Jewellery&sub=Bracelet" },
-                      { label: "Other Jewelleries", href: "/shop?category=Jewellery&sub=Other%20Jewelleries" },
+                      {
+                        label: "Pendant",
+                        href: "/shop?category=Jewellery&sub=Pendant",
+                      },
+                      {
+                        label: "Earring",
+                        href: "/shop?category=Jewellery&sub=Earring",
+                      },
+                      {
+                        label: "Ring",
+                        href: "/shop?category=Jewellery&sub=Ring",
+                      },
+                      {
+                        label: "Bracelet",
+                        href: "/shop?category=Jewellery&sub=Bracelet",
+                      },
+                      {
+                        label: "Other Jewelleries",
+                        href: "/shop?category=Jewellery&sub=Other%20Jewelleries",
+                      },
                     ],
                   },
                   {
@@ -1318,11 +1334,18 @@ export default function Home() {
                     icon: "gift",
                   },
                 ].map((item, i) => (
-                  <div key={item.label} className="relative overflow-visible">
+                  <div
+                    key={item.label}
+                    className="w-full relative overflow-visible"
+                  >
                     {item.submenu ? (
                       <>
+                        {/* Jewellery Parent Button */}
                         <div className="overflow-hidden">
                           <motion.button
+                            onClick={() => {
+                              setIsJewelleryOpen(!isJewelleryOpen);
+                            }}
                             onMouseEnter={(e) => {
                               setOpenSubmenu(item.label);
                               e.currentTarget.style.background = `linear-gradient(90deg, ${TOKENS.peach}, ${TOKENS.pink})`;
@@ -1331,7 +1354,7 @@ export default function Home() {
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: i * 0.05 }}
-                            className="w-full px-4 py-3.5 text-left text-sm font-bold transition-all border-b flex items-center justify-between"
+                            className="w-full px-4 py-3.5 text-left text-sm font-bold transition-all border-b flex items-center justify-between md:hover:bg-gradient-to-r"
                             style={{
                               color: TOKENS.pink,
                               borderColor: isDarkMode
@@ -1344,11 +1367,96 @@ export default function Home() {
                             }}
                           >
                             <span style={{ opacity: 0.7 }}>{item.label}</span>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <motion.svg
+                              animate={{ rotate: isJewelleryOpen ? 90 : 0 }}
+                              transition={{ duration: 0.2 }}
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="md:hidden"
+                            >
+                              <polyline points="9 18 15 12 9 6" />
+                            </motion.svg>
+                            {/* Desktop arrow always visible, pointing right */}
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="hidden md:block"
+                            >
                               <polyline points="9 18 15 12 9 6" />
                             </svg>
                           </motion.button>
                         </div>
+
+                        {/* Mobile Accordion - Vertical Layout */}
+                        <AnimatePresence>
+                          {isJewelleryOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="md:hidden overflow-hidden"
+                            >
+                              <div className="overflow-hidden">
+                                {item.submenu.map((subitem, subIdx) => (
+                                  <Link
+                                    key={subitem.href}
+                                    href={subitem.href}
+                                    onClick={() => {
+                                      setIsMenuOpen(false);
+                                      setIsJewelleryOpen(false);
+                                    }}
+                                  >
+                                    <motion.button
+                                      initial={{ opacity: 0, x: -8 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: subIdx * 0.03 }}
+                                      className="w-full px-4 py-3 text-left text-sm font-bold transition-all border-b last:border-0 flex items-center gap-3 pl-8"
+                                      style={{
+                                        color: TOKENS.pink,
+                                        borderColor: isDarkMode
+                                          ? "rgba(254,129,212,0.08)"
+                                          : "rgba(251,195,193,0.15)",
+                                      }}
+                                      onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = `linear-gradient(90deg, ${TOKENS.peach}, ${TOKENS.pink})`;
+                                        e.currentTarget.style.color =
+                                          TOKENS.white;
+                                      }}
+                                      onMouseLeave={(e) => {
+                                        e.currentTarget.style.background =
+                                          "transparent";
+                                        e.currentTarget.style.color =
+                                          TOKENS.pink;
+                                      }}
+                                    >
+                                      <span className="text-xs opacity-60">
+                                        →
+                                      </span>
+                                      <span style={{ opacity: 0.8 }}>
+                                        {subitem.label}
+                                      </span>
+                                    </motion.button>
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {/* Desktop Popup - Horizontal Layout */}
                         <AnimatePresence>
                           {openSubmenu === item.label && (
                             <motion.div
@@ -1358,9 +1466,11 @@ export default function Home() {
                               transition={{ duration: 0.2 }}
                               onMouseEnter={() => setOpenSubmenu(item.label)}
                               onMouseLeave={() => setOpenSubmenu(null)}
-                              className="absolute left-full top-0 ml-2 min-w-48 rounded-xl overflow-visible border shadow-lg z-50 backdrop-blur-xl"
+                              className="hidden md:block absolute left-full top-0 ml-2 min-w-48 rounded-xl overflow-visible border shadow-lg z-50 backdrop-blur-xl"
                               style={{
-                                background: isDarkMode ? TOKENS.glassDark : TOKENS.glass,
+                                background: isDarkMode
+                                  ? TOKENS.glassDark
+                                  : TOKENS.glass,
                                 borderColor: isDarkMode
                                   ? "rgba(254,129,212,0.15)"
                                   : "rgba(251,195,193,0.25)",
@@ -1390,15 +1500,22 @@ export default function Home() {
                                       }}
                                       onMouseEnter={(e) => {
                                         e.currentTarget.style.background = `linear-gradient(90deg, ${TOKENS.peach}, ${TOKENS.pink})`;
-                                        e.currentTarget.style.color = TOKENS.white;
+                                        e.currentTarget.style.color =
+                                          TOKENS.white;
                                       }}
                                       onMouseLeave={(e) => {
-                                        e.currentTarget.style.background = "transparent";
-                                        e.currentTarget.style.color = TOKENS.pink;
+                                        e.currentTarget.style.background =
+                                          "transparent";
+                                        e.currentTarget.style.color =
+                                          TOKENS.pink;
                                       }}
                                     >
-                                      <span className="text-xs opacity-60">→</span>
-                                      <span style={{ opacity: 0.8 }}>{subitem.label}</span>
+                                      <span className="text-xs opacity-60">
+                                        →
+                                      </span>
+                                      <span style={{ opacity: 0.8 }}>
+                                        {subitem.label}
+                                      </span>
                                     </motion.button>
                                   </Link>
                                 ))}
@@ -1445,7 +1562,6 @@ export default function Home() {
           </AnimatePresence>
         </div>
       </motion.nav>
-
 
       {/* ── PRODUCT SECTIONS ── */}
       <div className="relative z-10 py-6 space-y-12 px-4 md:px-8">
@@ -1513,9 +1629,7 @@ export default function Home() {
                 msOverflowStyle: "none",
               }}
             >
-              <div className="flex gap-5 px-2">
-                {renderProductCards(data)}
-              </div>
+              <div className="flex gap-5 px-2">{renderProductCards(data)}</div>
             </div>
           </motion.section>
         ))}
