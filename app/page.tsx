@@ -206,6 +206,9 @@ export default function Home() {
   // 1. ADDED: User state for the Navbar
   const [user, setUser] = useState<any>(null);
 
+  // Policy Modal State
+  const [showPolicyModal, setShowPolicyModal] = useState(false);
+
   const [newArrivals, setNewArrivals] = useState<any[]>([]);
   const [specials, setSpecials] = useState<any[]>([]);
   const [bestSellers, setBestSellers] = useState<any[]>([]);
@@ -908,6 +911,38 @@ export default function Home() {
               </motion.button>
             </Link>
           ))}
+          
+          {/* Policy Button */}
+          <motion.button
+            onClick={() => setShowPolicyModal(true)}
+            whileHover={{ scale: 1.06, y: -1 }}
+            whileTap={{ scale: 0.94 }}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all border"
+            style={{
+              background: isDarkMode
+                ? "rgba(254,129,212,0.15)"
+                : "rgba(255,234,187,0.3)",
+              color: isDarkMode ? TOKENS.cream : TOKENS.textDark,
+              borderColor: isDarkMode
+                ? "rgba(254,129,212,0.2)"
+                : "rgba(255,234,187,0.5)",
+            }}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+            <span className="hidden sm:inline">Policy</span>
+          </motion.button>
         </div>
       </motion.div>
 
@@ -1788,6 +1823,116 @@ export default function Home() {
       >
         {icons.gift}
       </motion.div>
+
+      {/* ── POLICY MODAL ── */}
+      <AnimatePresence>
+        {showPolicyModal && (
+          <motion.div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm"
+            style={{
+              background: "rgba(0, 0, 0, 0.5)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowPolicyModal(false)}
+          >
+            <motion.div
+              className="relative max-w-2xl w-full max-h-[85vh] overflow-y-auto rounded-3xl p-8 shadow-2xl"
+              style={{
+                background: isDarkMode
+                  ? "linear-gradient(135deg, rgba(45,27,46,0.95) 0%, rgba(26,15,26,0.95) 100%)"
+                  : "linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,250,240,0.98) 100%)",
+              }}
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <motion.button
+                onClick={() => setShowPolicyModal(false)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all"
+                style={{
+                  background: isDarkMode
+                    ? "rgba(254,129,212,0.2)"
+                    : "rgba(255,234,187,0.3)",
+                  color: isDarkMode ? TOKENS.cream : TOKENS.textDark,
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </motion.button>
+
+              {/* Policy Content */}
+              <div className="space-y-6 pr-4">
+                <h2 className="text-3xl font-black mb-6" style={{ color: TOKENS.pink }}>
+                  Policy
+                </h2>
+
+                <div className="space-y-4 text-sm leading-relaxed" style={{ color: isDarkMode ? TOKENS.cream : TOKENS.textDark }}>
+                  <div>
+                    <h3 className="font-bold text-base mb-2 flex items-center gap-2" style={{ color: TOKENS.peach }}>
+                      <span>A.</span> How to Order
+                    </h3>
+                    <ol className="list-decimal pl-5 space-y-1 ml-2">
+                      <li>Select product</li>
+                      <li>DM us your selections</li>
+                      <li>We'll confirm availability, price & shipping charges</li>
+                      <li>Make payment via UPI (details will be shared)</li>
+                      <li>We pack your order with love & ship it soon!</li>
+                      <li>Tracking details will be shared after dispatch</li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-base mb-2 flex items-center gap-2" style={{ color: TOKENS.peach }}>
+                      <span>B.</span> Payment Policy
+                    </h3>
+                    <ul className="list-disc pl-5 space-y-1 ml-2">
+                      <li>Prepaid orders only (No COD)</li>
+                      <li>Payments via UPI or bank transfer</li>
+                      <li>Orders are confirmed only after full payment</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-base mb-2 flex items-center gap-2" style={{ color: TOKENS.peach }}>
+                      <span>C.</span> Shipping & Delivery
+                    </h3>
+                    <ul className="list-disc pl-5 space-y-1 ml-2">
+                      <li>We ship PAN Kolkata</li>
+                      <li>Orders dispatched within 1-3 working days</li>
+                      <li>Delivery in 7-14 working days (location dependent)</li>
+                      <li>Shipping charges apply - shared at order time</li>
+                      <li>FREE SHIPPING on all orders above ₹999</li>
+                      <li>Premium packaging and personalised notes available</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-base mb-2 flex items-center gap-2" style={{ color: TOKENS.peach }}>
+                      <span>D.</span> Return & Exchange Policy
+                    </h3>
+                    <ul className="list-disc pl-5 space-y-1 ml-2">
+                      <li>No returns or exchanges unless:</li>
+                      <li className="ml-4">• Wrong product received</li>
+                      <li className="ml-4">• Product is damaged</li>
+                      <li>For valid claims, a clear unboxing video within 24 hours is a must</li>
+                      <li>Note: No returns accepted without video proof</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
