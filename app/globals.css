@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* YOUR NEW PREMIUM PASTEL THEME */
+  --color-brand-cream: #FFEABB;
+  --color-brand-peach: #FBC3C1;
+  --color-brand-rose: #FAACBF;
+  --color-brand-pink: #FE81D4;
+
+  --animate-marquee: marquee 20s linear infinite;
+  
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+}
+
+/* Scrollbar Hide Utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
