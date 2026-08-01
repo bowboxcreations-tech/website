@@ -38,6 +38,8 @@ export default function ProductDetail() {
         .from("products")
         .select("*")
         .eq("slug", slug)
+        .single(); // <-- Added .single() back!
+
       if (mainProduct) {
         setProduct(mainProduct);
         // Fetch more related products (increased limit)
@@ -45,7 +47,7 @@ export default function ProductDetail() {
           .from("products")
           .select("*")
           .eq("main_category", mainProduct.main_category)
-          .neq("id", id)
+          .neq("id", mainProduct.id) // <-- Changed id to mainProduct.id
           .limit(12);
         if (related) {
           setRelatedProducts(related);
