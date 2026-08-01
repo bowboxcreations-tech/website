@@ -30,15 +30,20 @@ export default function ProductDetail() {
     "Other Jewelleries",
   ];
 
-  useEffect(() => {
+useEffect(() => {
     async function getProductAndRelated() {
       setLoading(true);
       setImageLoaded(false);
-      const { data: mainProduct } = await supabase
+      
+      // We removed the direct 'mainProduct' destructuring here
+      const { data } = await supabase
         .from("products")
         .select("*")
         .eq("slug", slug)
-        .single(); // <-- Added .single() back!
+        .single(); 
+
+      // Force TypeScript to accept this is a single object, not an array!
+      const mainProduct = data as any;
 
       if (mainProduct) {
         setProduct(mainProduct);
@@ -47,8 +52,9 @@ export default function ProductDetail() {
           .from("products")
           .select("*")
           .eq("main_category", mainProduct.main_category)
-          .neq("id", mainProduct.id) // <-- Changed id to mainProduct.id
+          .neq("id", mainProduct.id) 
           .limit(12);
+          
         if (related) {
           setRelatedProducts(related);
           // Set initial filter to current product's subcategory if it's Jewellery
@@ -63,7 +69,7 @@ export default function ProductDetail() {
       setLoading(false);
     }
     getProductAndRelated();
-  }, [id]);
+  }, [slug]); // <-- IMPORTANT: Changed [id] to [slug] here!
 
   useEffect(() => {
     async function checkWishlist() {
