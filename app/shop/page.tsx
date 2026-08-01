@@ -367,8 +367,8 @@ function ShopContent() {
                     whileHover={{ y: -10, scale: 1.015 }}
                     className="group flex flex-col bg-white/60 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/70 shadow-[0_4px_24px_-8px_rgba(254,129,212,0.12)]"
                   >
-                    <Link href={`/product/${product.id}`}>
-                      <div className="relative overflow-hidden aspect-square bg-white">
+                   <Link href={`/product/${product.slug}`}>
+  <div className="relative overflow-hidden aspect-square bg-white">
                         <img
                           src={mainImage}
                           alt={product.name}
@@ -413,7 +413,7 @@ function ShopContent() {
                       </div>
                     </Link>
                     <div className="flex flex-col flex-1 p-5">
-                      <Link href={`/product/${product.id}`}>
+                      <Link href={`/product/${product.slug}`}>
                         <h3 className="font-black text-[#2D2D2D] text-sm leading-snug line-clamp-2 mb-2 hover:text-[#FE81D4] transition-colors duration-300">
                           {product.name}
                         </h3>
