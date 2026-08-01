@@ -435,7 +435,7 @@ export default function Home() {
           variants={cardHover}
           whileHover="hover"
         >
-          <Link href={`/product/${product.id}`}>
+          <Link href={`/product/${product.slug}`}>
             <div className="relative overflow-hidden aspect-square bg-white">
               {/* Base Image */}
               <motion.img
@@ -484,7 +484,7 @@ export default function Home() {
           </Link>
 
           <div className="p-4 flex flex-col flex-1 relative z-20 bg-white dark:bg-transparent">
-            <Link href={`/product/${product.id}`}>
+            <Link href={`/product/${product.slug}`}>
               <h3
                 className="font-bold text-xs leading-snug line-clamp-2 min-h-[36px] mb-2 transition-colors duration-300"
                 style={{ color: isDarkMode ? TOKENS.cream : TOKENS.textDark }}
