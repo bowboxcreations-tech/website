@@ -789,6 +789,9 @@ export default function AdminDashboard() {
       if (validUrls.length === 0)
         throw new Error("No images could be processed.");
 
+      // Auto-generate a beautiful, unique link using the product name and a timestamp
+      const generatedSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+
       const productData = {
         name,
         price: parseFloat(price),
@@ -797,9 +800,10 @@ export default function AdminDashboard() {
         sub_category: subCategory,
         image_url: validUrls[0],
         image_gallery: validUrls,
-        is_new_arrival: isNewArrival,    // <-- ADDED THIS
-        is_special: isSpecial,           // <-- ADDED THIS
-        is_best_seller: isBestSeller,    // <-- ADDED THIS
+        is_new_arrival: isNewArrival,    
+        is_special: isSpecial,           
+        is_best_seller: isBestSeller,    
+        slug: generatedSlug, // <-- ADDED THE SLUG GENERATOR HERE
       };
 
       if (editingProductId) {
